@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+output/
+dist/
+build/
+
+# Large media assets (keep directory structure via .gitkeep)
+public/**/*.mp4
+public/**/*.webm
+public/**/*.mov
+public/**/*.avi
+public/**/*.mp3
+public/**/*.wav
+public/**/*.aiff
+public/**/*.flac
+public/**/*.png
+public/**/*.jpg
+public/**/*.jpeg
+public/**/*.gif
+public/**/*.webp
+
+# Remotion cache
+.remotion/
+
+# System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Backups
+_backup_*/
+src_backup_*/
+
+# 旧 EP01 子项目（已迁移到 src/episodes/EP01/）
+/episodes/

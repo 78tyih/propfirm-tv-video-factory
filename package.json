@@ -1,0 +1,23 @@
+{
+  "name": "propfirm-tv-video-factory",
+  "version": "1.0.0",
+  "description": "PropFirm.TV Video Factory — Calm Fintech Editorial 可复用视频流水线",
+  "scripts": {
+    "studio": "remotion studio",
+    "preview": "remotion preview",
+    "create": "node scripts/create-episode.mjs",
+    "build:ep01": "remotion render PropFirmTV-EP01 output/PropFirmTV_EP01.mp4",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.512",
+    "@remotion/player": "^4.0.512",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "remotion": "^4.0.512"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}
