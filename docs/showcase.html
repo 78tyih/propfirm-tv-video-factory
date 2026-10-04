@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>PropFirm.TV Video Factory — Remotion 视频流水线 · 交互展示</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#05070A; --panel:rgba(10,14,22,.78); --panel-2:rgba(18,25,40,.88); --ink:#F7F9FC; --ink2:#8B96A8; --ink3:#5A6478;
+  --hairline:rgba(247,249,252,.1); --accent:#146EFF; --accent-soft:rgba(20,110,255,.1);
+  --yellow:#FFC53D; --orange:#FF8A3D; --red:#FF3B45;
+  --mono:"JetBrains Mono",ui-monospace,monospace; --font-body:"Inter","Noto Sans SC",system-ui,sans-serif;
+}
+html[data-theme="light"]{
+  --paper:#F4F6F9; --panel:#FFFFFF; --panel-2:#FFFFFF; --ink:#141922; --ink2:#535C6B; --ink3:#8C95A3;
+  --hairline:rgba(20,25,34,.13); --accent-soft:rgba(20,110,255,.08);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);margin:0;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 34px}
+.en{display:none} html[data-lang="en"] .en{display:inline} html[data-lang="en"] .zh{display:none}
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--hairline)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;max-width:1080px;margin:0 auto}
+.logo{font-size:15px;font-weight:600;text-decoration:none;color:var(--ink)}
+.logo b{color:var(--accent)}
+.hd-right{display:flex;gap:8px}
+.tgl{border:1px solid var(--hairline);background:transparent;color:var(--ink2);padding:5px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)}
+.tgl:hover{color:var(--ink);border-color:var(--ink3)} .tgl.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hero{padding:80px 0 56px;border-bottom:1px solid var(--hairline)}
+.kicker{display:flex;align-items:center;gap:14px;font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--ink2);font-family:var(--mono)}
+.kicker::before{content:"";width:34px;height:1px;background:var(--ink3)}
+h1{font-size:clamp(2.1rem,4.4vw,3.2rem);line-height:1.16;letter-spacing:-.01em;font-weight:600;margin:22px 0 0;max-width:24ch}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{max-width:62ch;color:var(--ink2);font-size:15px;margin:18px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:0;margin-top:24px}
+.chip{border:1px solid var(--hairline);padding:7px 15px;font-size:11.5px;color:var(--ink2);background:var(--panel);font-family:var(--mono);letter-spacing:.06em}
+.chip+.chip{border-left:0} .chip b{color:var(--accent);font-weight:500}
+.cta{display:flex;gap:0;margin-top:28px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--ink);background:transparent;color:var(--ink);transition:all .15s ease}
+.btn--accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn+.btn{border-left:0}
+.btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+section{padding:60px 0;border-bottom:1px solid var(--hairline)}
+.sec-no{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+h2{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:600;margin:8px 0 0;letter-spacing:-.01em}
+h2 em{font-style:normal;color:var(--accent)}
+.sec-sub{color:var(--ink2);font-size:14px;margin-top:10px;max-width:66ch}
+/* pipeline */
+.pipe{border:1px solid var(--hairline);background:var(--panel)}
+.stp{padding:16px 22px;border-bottom:1px solid var(--hairline);display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:baseline}
+.stp:last-child{border-bottom:0}
+.stp i{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--accent);letter-spacing:.14em}
+.stp b{font-size:14px;font-weight:600}
+.stp code{font-family:var(--mono);font-size:12px;background:var(--accent-soft);padding:1px 7px;color:var(--ink)}
+.stp p{margin:4px 0 0;font-size:13px;color:var(--ink2)}
+/* tokens */
+.toks{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hairline);background:var(--panel)}
+@media(max-width:820px){.toks{grid-template-columns:1fr 1fr}}
+.tk{border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.tk:nth-child(4n){border-right:0}
+@media(max-width:820px){.tk:nth-child(4n){border-right:1px solid var(--hairline)}.tk:nth-child(2n){border-right:0}}
+.tk-sw{height:64px}
+.tk-b{padding:11px 14px 13px}
+.tk-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.tk-h{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-top:3px}
+/* schema */
+.codebox{border:1px solid var(--hairline);background:var(--panel);padding:20px 24px;font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--ink2);overflow-x:auto}
+.codebox b{color:var(--accent);font-weight:500}
+.codebox .cm{color:var(--ink3)}
+/* motions */
+.mots{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hairline);background:var(--panel)}
+@media(max-width:820px){.mots{grid-template-columns:1fr 1fr}}
+.mot{padding:20px 22px;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.mot:nth-child(4n){border-right:0}
+@media(max-width:820px){.mot:nth-child(4n){border-right:1px solid var(--hairline)}.mot:nth-child(2n){border-right:0}}
+.mot code{font-family:var(--mono);font-size:11.5px;color:var(--accent)}
+.mot p{margin:8px 0 0;font-size:12.5px;color:var(--ink2)}
+.mot .demo{height:38px;margin-top:12px;border:1px solid var(--hairline);background:var(--accent-soft);position:relative;overflow:hidden}
+.mot .dot{position:absolute;width:22px;height:22px;background:var(--accent);top:7px}
+/* faq */
+.faq{border:1px solid var(--hairline);background:var(--panel)}
+details.faq-item{border-bottom:1px solid var(--hairline)}
+details.faq-item:last-child{border-bottom:0}
+details.faq-item summary{cursor:pointer;list-style:none;display:flex;gap:16px;align-items:baseline;padding:17px 20px}
+details.faq-item summary::-webkit-details-marker{display:none}
+details.faq-item summary:hover .qt{color:var(--accent)}
+details.faq-item summary .qm{font-family:var(--mono);color:var(--accent);font-size:10.5px;letter-spacing:.22em;min-width:52px;text-transform:uppercase}
+details.faq-item summary .qt{flex:1;font-size:15.5px;font-weight:500}
+details.faq-item summary .qc{color:var(--ink3);font-family:var(--mono);font-size:13px;transition:transform .15s ease}
+details.faq-item[open] summary .qc{transform:rotate(45deg)}
+details.faq-item .qa{padding:0 20px 20px 88px;color:var(--ink2);font-size:14px;line-height:1.75}
+details.faq-item .qa b{color:var(--ink)}
+@media(max-width:700px){details.faq-item .qa{padding-left:20px}}
+footer{padding:40px 0 56px;color:var(--ink3);font-size:12px}
+.fm{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@keyframes m-fade{0%,20%{opacity:0}45%,80%{opacity:1}100%{opacity:0}}
+@keyframes m-slide{0%,20%{transform:translateY(-14px);opacity:0}50%,80%{transform:translateY(0);opacity:1}100%{opacity:0}}
+@keyframes m-scale{0%,20%{transform:scale(.6);opacity:0}50%,80%{transform:scale(1);opacity:1}100%{opacity:0}}
+@keyframes m-hl{0%,25%{left:6px}55%,80%{left:calc(100% - 28px)}100%{left:6px}}
+</style>
+</head>
+<body>
+<header><div class="hd">
+  <a class="logo" href="#">PropFirm.TV <b>Video Factory</b></a>
+  <div class="hd-right">
+    <button class="tgl on" id="lang-zh" onclick="setLang('zh')">中</button>
+    <button class="tgl" id="lang-en" onclick="setLang('en')">EN</button>
+    <button class="tgl" id="th-light" onclick="setTheme('light')">☀︎</button>
+    <button class="tgl on" id="th-dark" onclick="setTheme('dark')">☾</button>
+  </div>
+</div></header>
+
+<div class="wrap">
+<section class="hero">
+  <div class="kicker">REMOTION 4.0 + REACT 19 <span style="color:var(--ink3)">·</span> CALM FINTECH EDITORIAL <span style="color:var(--ink3)">·</span> EPISODE FACTORY</div>
+  <h1><span class="zh">选题进，成片出：<em>可复用的</em>金融视频流水线</span><span class="en">Topic in, video out — a reusable fintech video pipeline</span></h1>
+  <p class="sub"><span class="zh">基于 Remotion 的 Episode 工厂：一条命令脚手架出新集骨架（配置/合成/镜头/文稿/素材目录自动生成），设计系统全片统一——Calm Fintech Editorial 色板、三级字体层级、仅四类柔和动效。</span>
+  <span class="en">An episode factory on Remotion: scaffold a new episode with one command; the design system stays uniform — calm fintech palette, three type tiers, exactly four soft motions.</span></p>
+  <div class="chips">
+    <span class="chip"><b>1</b> <span class="zh">条命令建新集</span><span class="en">command per episode</span></span>
+    <span class="chip"><b>9</b> shots / EP01</span>
+    <span class="chip"><b>7</b> <span class="zh">色 token</span><span class="en">color tokens</span></span>
+    <span class="chip"><b>4</b> <span class="zh">类动效，无回弹</span><span class="en">motions, no bounce</span></span>
+    <span class="chip">1920×1080 @ 30fps</span>
+  </div>
+  <div class="cta">
+    <a class="btn btn--accent" href="#flow"><span class="zh">看工作流 ↓</span><span class="en">See the workflow ↓</span></a>
+    <a class="btn" href="https://github.com/78tyih/propfirm-tv-video-factory">GitHub</a>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="sec-no">01 · WORKFLOW</div>
+  <h2><span class="zh">从选题到成片的<em>七步</em></span><span class="en">Seven steps from topic to render</span></h2>
+  <div class="pipe" style="margin-top:22px">
+    <div class="stp"><i>STEP 1</i><div><b><span class="zh">脚手架</span><span class="en">Scaffold</span></b> <code>npm run create -- --ep=EP02 --topic="..."</code><p><span class="zh">自动生成 src/episodes/EP02/（配置、合成、示例 Shot、文稿模板）+ public/ep02/ + 更新 Root.tsx 与注册表</span><span class="en">Generates episode dir, assets dir, and updates Root.tsx + registry automatically</span></p></div></div>
+    <div class="stp"><i>STEP 2</i><div><b><span class="zh">写文稿</span><span class="en">Script</span></b><p><code>script.txt</code> · <span class="zh">口播文稿</span><span class="en">voice-over script</span></p></div></div>
+    <div class="stp"><i>STEP 3</i><div><b><span class="zh">音频 / 数字人</span><span class="en">Audio / avatar</span></b><p><span class="zh">TTS 或 HeyGen 生成 → public/ep02/</span><span class="en">TTS or HeyGen → public/ep02/</span></p></div></div>
+    <div class="stp"><i>STEP 4</i><div><b><span class="zh">背景素材</span><span class="en">Backgrounds</span></b><p><span class="zh">从 Eagle 资产库收集 → public/ep02/eagle/</span><span class="en">Collect from Eagle library → public/ep02/eagle/</span></p></div></div>
+    <div class="stp"><i>STEP 5</i><div><b><span class="zh">填配置</span><span class="en">Config</span></b> <code>config.ts</code><p><span class="zh">shots + subtitles 全部数据驱动</span><span class="en">shots + subtitles, all data-driven</span></p></div></div>
+    <div class="stp"><i>STEP 6</i><div><b><span class="zh">预览调试</span><span class="en">Preview</span></b> <code>npm run studio</code></div></div>
+    <div class="stp"><i>STEP 7</i><div><b><span class="zh">渲染成片</span><span class="en">Render</span></b> <code>npm run build:ep02</code> · 1920×1080 @ 30fps</div></div>
+  </div>
+</section>
+
+<section id="tokens">
+  <div class="sec-no">02 · DESIGN TOKENS</div>
+  <h2><span class="zh">Calm Fintech Editorial：<em>全片统一</em></span><span class="en">Calm Fintech Editorial tokens</span></h2>
+  <p class="sec-sub"><span class="zh">色值逐字取自 src/shared/theme.ts：</span><span class="en">Values verbatim from src/shared/theme.ts:</span></p>
+  <div class="toks" style="margin-top:22px" id="tok-grid"></div>
+  <div style="margin-top:22px">
+    <p class="sec-sub" style="margin-bottom:10px"><span class="zh">动效只保留四类（柔和无回弹，Easing.out(cubic)）——下面是网页复刻：</span><span class="en">Only four motions (soft, no bounce) — web replicas below:</span></p>
+    <div class="mots">
+      <div class="mot"><code>fadeIn</code><p><span class="zh">柔和淡入，默认 18 帧</span><span class="en">Soft fade in, 18f default</span></p><div class="demo"><div class="dot" style="animation:m-fade 2.4s infinite"></div></div></div>
+      <div class="mot"><code>slideUp</code><p><span class="zh">自下而上传入</span><span class="en">Enter from below</span></p><div class="demo"><div class="dot" style="animation:m-slide 2.4s infinite"></div></div></div>
+      <div class="mot"><code>scaleIn</code><p><span class="zh">缩放浮现</span><span class="en">Scale into place</span></p><div class="demo"><div class="dot" style="animation:m-scale 2.4s infinite"></div></div></div>
+      <div class="mot"><code>highlightShift</code><p><span class="zh">高亮卡到卡位移</span><span class="en">Highlight moves card to card</span></p><div class="demo"><div class="dot" style="animation:m-hl 2.8s infinite"></div></div></div>
+    </div>
+  </div>
+  <div style="margin-top:22px">
+    <p class="sec-sub" style="margin-bottom:10px"><span class="zh">三级字体层级：</span><span class="en">Three type tiers:</span></p>
+    <div style="border:1px solid var(--hairline);background:var(--panel);padding:22px 26px">
+      <div style="font-size:30px;font-weight:600;letter-spacing:-.01em;text-shadow:0 3px 18px rgba(0,0,0,.35)">A <span class="zh">· 主标题 60–72px · 描边+轻阴影</span><span class="en">· Title 60–72px · stroke + soft shadow</span></div>
+      <div style="font-size:19px;font-weight:500;margin-top:12px">B <span class="zh">· 卡片标题 23–30px · 当前卡高亮</span><span class="en">· Card title 23–30px · active highlight</span></div>
+      <div style="font-size:13.5px;color:var(--ink2);margin-top:10px">C <span class="zh">· 辅助说明 16–20px · 灰蓝小号</span><span class="en">· Aux text 16–20px · muted</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="schema">
+  <div class="sec-no">03 · EPISODE SCHEMA</div>
+  <h2><span class="zh">一集 = 一个 <em>config.ts</em></span><span class="en">One episode = one config.ts</span></h2>
+  <div class="codebox" style="margin-top:22px">interface <b>EpisodeConfig</b> {
+  id: string;              <span class="cm">// 'EP01'</span>
+  title: string;
+  compositionId: string;   <span class="cm">// 'PropFirmTV-EP01'</span>
+  durationInFrames: number;
+  fps: number;             <span class="cm">// 30</span>
+  width: number;           <span class="cm">// 1920</span>
+  height: number;          <span class="cm">// 1080</span>
+  audioSrc: string;        <span class="cm">// 'ep01/avatar_v2.webm'</span>
+  avatar: AvatarConfig;
+  backgroundSrc?: string;
+  shots: ShotConfig[];
+  subtitles: SubtitleLine[];
+}</div>
+  <p class="sec-sub" style="margin-top:16px"><span class="zh">素材按 episode 隔离在 public/epXX/（eagle/ 背景视频 · avatar_v2.webm 数字人 · studio 底板）；大文件走 .gitignore。技术栈：Remotion 4.0 · React 19 · TS 5.7 · HeyGen · faster-whisper 字幕对齐 · Eagle 资产管理。</span>
+  <span class="en">Assets isolated per episode in public/epXX/; large binaries gitignored. Stack: Remotion 4.0 · React 19 · TS 5.7 · HeyGen · faster-whisper alignment · Eagle.</span></p>
+</section>
+
+<section id="why">
+  <div class="sec-no">04 · FAQ</div>
+  <h2><span class="zh">常见问题 · 四问速览</span><span class="en">FAQ · The four questions</span></h2>
+  <div class="faq" style="margin-top:22px">
+    <details class="faq-item" open>
+      <summary><span class="qm">Q.1</span><span class="qt"><span class="zh">解决什么问题？</span><span class="en">What problem does it solve?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">系列金融短视频每集都从零搭：风格漂移、素材乱放、配置散落。工厂把骨架、设计系统、素材隔离、注册机制全部固化——新集只填内容。</span><span class="en">Series videos drift: style inconsistency, scattered assets, loose configs. The factory locks skeleton, design system, asset isolation and registration — new episodes only fill content.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.2</span><span class="qt"><span class="zh">什么场景用？得到什么结果？</span><span class="en">Scenario and outcome?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">PropFirm.TV 自营交易考核内容的系列化生产：选题 → 七步 → 1080p 成片（数字人口播 + 背景素材 + 字幕）。EP01（9 个 Shot）已跑通全流程。</span><span class="en">Serialized propfirm content: topic → seven steps → 1080p render (avatar + backgrounds + subtitles). EP01 (9 shots) ran the full pipeline.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.3</span><span class="qt"><span class="zh">内部是什么结构？</span><span class="en">How is it structured?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">src/shared/（theme.ts 设计令牌 + types.ts Schema + AvatarCircle/Subtitles 参数化组件）+ src/episodes/（注册表 + EP01/config-shots-script）+ scripts/create-episode.mjs 脚手架。Root.tsx 动态注册所有 Episode。</span><span class="en">src/shared/ (tokens + schema + parameterized components) + src/episodes/ (registry + EP01) + scaffolder CLI. Root.tsx registers episodes dynamically.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="qm">Q.4</span><span class="qt"><span class="zh">能复用什么？</span><span class="en">What can you reuse?</span></span><span class="qc">＋</span></summary>
+      <div class="qa"><span class="zh">① Episode 工厂模式（脚手架 + 注册表 + config 数据驱动）适用于任何 Remotion 系列；② Calm Fintech Editorial 色板与三级字体层级；③ 「只留四类动效」的克制语法；④ 参数化数字人 + 字幕组件。</span><span class="en">The episode factory pattern, the calm fintech tokens and type tiers, the four-motion-only grammar, and parameterized avatar/subtitle components.</span></div>
+    </details>
+  </div>
+</section>
+
+<footer><div class="fm">
+  <div><b style="color:var(--ink2)">propfirm-tv-video-factory</b> · <span class="zh">Remotion 视频流水线</span><span class="en">Remotion video pipeline</span></div>
+  <div><span class="zh">色板、动效与 Schema 逐字取自仓库源码（Observed）</span><span class="en">Palette, motions and schema verbatim from repo source (Observed)</span></div>
+</div></footer>
+</div>
+
+<script>
+const TOK=[
+ {n:"bg · <span class='zh'>主黑</span><span class='en'>main black</span>",h:"#05070A",c:"#05070A",light:true},
+ {n:"blue · <span class='zh'>强调/品牌</span><span class='en'>accent</span>",h:"#146EFF",c:"#146EFF"},
+ {n:"white · <span class='zh'>主文字</span><span class='en'>text</span>",h:"#F7F9FC",c:"#F7F9FC",light:true},
+ {n:"red · <span class='zh'>警示</span><span class='en'>risk</span>",h:"#FF3B45",c:"#FF3B45"},
+ {n:"muted · <span class='zh'>副文字</span><span class='en'>muted</span>",h:"#8B96A8",c:"#8B96A8",light:true},
+ {n:"yellow · <span class='zh'>字幕强调</span><span class='en'>sub highlight</span>",h:"#FFC53D",c:"#FFC53D"},
+ {n:"orange · <span class='zh'>风险类强调</span><span class='en'>risk highlight</span>",h:"#FF8A3D",c:"#FF8A3D"},
+ {n:"panel · <span class='zh'>卡片底</span><span class='en'>card</span>",h:"rgba(10,14,22,.78)",c:"#0A0E16"}
+];
+const lang=()=>document.documentElement.dataset.lang;
+function setLang(l){document.documentElement.dataset.lang=l;localStorage.setItem("pf-lang",l);
+ document.getElementById("lang-zh").classList.toggle("on",l==="zh");
+ document.getElementById("lang-en").classList.toggle("on",l==="en");renderTok();}
+function setTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem("pf-theme",t);
+ document.getElementById("th-light").classList.toggle("on",t==="light");
+ document.getElementById("th-dark").classList.toggle("on",t==="dark");}
+function renderTok(){
+ document.getElementById("tok-grid").innerHTML=TOK.map(t=>`
+  <div class="tk"><div class="tk-sw" style="background:${t.c};${t.light?"border-bottom:1px solid var(--hairline)":""}"></div>
+  <div class="tk-b"><div class="tk-n">${t.n}</div><div class="tk-h">${t.h}</div></div></div>`).join("");
+}
+(function boot(){
+ const q=new URLSearchParams(location.search);
+ setTheme(q.get("theme")||localStorage.getItem("pf-theme")||"dark");
+ setLang(q.get("lang")||localStorage.getItem("pf-lang")||(navigator.language.startsWith("zh")?"zh":"en"));
+ renderTok();
+})();
+</script>
+</body>
+</html>

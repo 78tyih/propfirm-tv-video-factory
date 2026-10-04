@@ -1,0 +1,21 @@
+{
+  "slug": "propfirm-tv-video-factory",
+  "name": "PropFirm.TV Video Factory",
+  "oneLiner": {
+    "zh": "Calm Fintech Editorial 风格的可复用视频流水线：一条命令脚手架新集，设计系统全片统一，选题进成片出。",
+    "en": "A reusable Remotion video pipeline: scaffold episodes with one command, uniform calm-fintech design system."
+  },
+  "type": "video pipeline (Remotion 4.0 + React 19)",
+  "status": "EP01 full pipeline verified (9 shots)",
+  "repo": "https://github.com/78tyih/propfirm-tv-video-factory",
+  "showcase": "https://78tyih.github.io/propfirm-tv-video-factory/showcase.html",
+  "fourQuestions": {
+    "problem": "系列金融短视频每集从零搭：风格漂移、素材乱放、配置散落。",
+    "scenarioOutcome": "选题 → 七步（脚手架/文稿/音频数字人/素材/配置/预览/渲染）→ 1920×1080@30fps 成片（数字人口播+背景+字幕）。",
+    "architecture": "src/shared/（theme.ts 令牌 + EpisodeConfig Schema + 参数化 AvatarCircle/Subtitles）+ src/episodes/（注册表 + EP01：config + 9 shots + script）+ scripts/create-episode.mjs 脚手架；Root.tsx 动态注册。",
+    "reuse": "Episode 工厂模式（脚手架+注册表+config 驱动）、Calm Fintech 色板与三级字体层级、四类动效克制语法、参数化数字人+字幕组件。"
+  },
+  "palette": {"bg":"#05070A","blue":"#146EFF","white":"#F7F9FC","red":"#FF3B45","muted":"#8B96A8","yellow":"#FFC53D","orange":"#FF8A3D"},
+  "stack": ["Remotion 4.0", "React 19", "TypeScript 5.7", "HeyGen", "faster-whisper", "Eagle"],
+  "links": {"source": ["src/shared/theme.ts", "src/shared/types.ts", "src/episodes/EP01/", "scripts/create-episode.mjs"]}
+}
